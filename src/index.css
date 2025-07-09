@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    border-color: theme('colors.stroke.DEFAULT');
+  }
+  
+  .dark * {
+    border-color: theme('colors.stroke.dark');
+  }
+  
+  body {
+    font-family: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+    background-color: theme('colors.surface.DEFAULT');
+    color: theme('colors.text.body');
+  }
+  
+  .dark body {
+    background-color: theme('colors.surface.dark');
+    color: theme('colors.text.body-dark');
+  }
+}
+
+@layer components {
+  /* Outlined Pill Component */
+  .pill {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-pill border transition-all duration-button ease-out min-h-tap-target;
+  }
+  
+  .pill-inactive {
+    @apply pill border-stroke bg-surface text-text-high/80 hover:shadow-hover;
+  }
+  
+  .pill-active {
+    @apply pill border-accent bg-accent text-white;
+  }
+  
+  /* Dark mode variants */
+  .dark .pill-inactive {
+    @apply border-stroke-dark bg-surface-dark text-text-high-dark/80;
+  }
+  
+  .dark .pill-active {
+    @apply border-accent-dark bg-accent-dark;
+  }
+  
+  /* Card Component */
+  .card {
+    @apply bg-surface border border-stroke rounded-card p-4 transition-all duration-button ease-out hover:shadow-hover;
+  }
+  
+  .dark .card {
+    @apply bg-surface-dark border-stroke-dark;
+  }
+  
+  /* Quantity Stepper */
+  .qty-button {
+    @apply w-10 h-10 rounded-full border border-stroke flex items-center justify-center transition-all duration-button ease-out hover:shadow-hover focus:border-accent;
+  }
+  
+  .dark .qty-button {
+    @apply border-stroke-dark focus:border-accent-dark;
+  }
+  
+  /* Cart Bar */
+  .cart-bar {
+    @apply fixed bottom-0 left-0 right-0 bg-surface border-t border-stroke p-4 transition-all duration-slide ease-out;
+  }
+  
+  .dark .cart-bar {
+    @apply bg-surface-dark border-stroke-dark;
+  }
+  
+  .cart-bar-empty {
+    @apply cart-bar border border-stroke;
+  }
+  
+  .cart-bar-filled {
+    @apply cart-bar bg-accent text-white;
+  }
+  
+  .dark .cart-bar-filled {
+    @apply bg-accent-dark;
+  }
+}
