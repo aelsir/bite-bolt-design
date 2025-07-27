@@ -43,21 +43,24 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
   };
 
   return (
-    <div className="relative">
-      {/* Cover Background Layer - Full height to show 50% above card */}
-      <div 
-        className="absolute inset-0 h-48 bg-cover bg-center bg-no-repeat rounded-card"
-        style={{ backgroundImage: `url(${restaurant.heroImage})` }}
-      >
-        <div className="absolute inset-0 bg-black/30 rounded-card" />
+    <div className="pb-4 relative">
+      {/* Cover Image - Full width and fixed height */}
+      <div className="w-full h-48 overflow-hidden rounded-t-lg">
+        <div 
+          className="w-full h-full bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${restaurant.heroImage})` }}
+        >
+          <div className="w-full h-full bg-black/30" />
+        </div>
       </div>
       
-      {/* White Card Content - Positioned to reveal 50% of cover */}
-      <div className="relative z-10 mt-24 mx-4">
-        <div className="bg-white dark:bg-surface-dark rounded-card border border-stroke dark:border-stroke-dark shadow-hover overflow-hidden">
-          <div className="flex">
-            {/* Restaurant Logo - Perfect Square */}
-            <div className="w-20 h-20 flex-shrink-0">
+      {/* Restaurant Card - Overlapping the cover image by 1/3 */}
+      <div className="mx-4 relative" style={{ marginTop: '-4rem' }}>
+        <div className="bg-white dark:bg-surface-dark rounded-lg border border-stroke dark:border-stroke-dark shadow-hover overflow-hidden">
+          {/* Restaurant Info with Side Logo */}
+          <div className="flex p-4 items-center">
+            {/* Restaurant Logo - Left Side */}
+            <div className="w-20 h-20 rounded-lg overflow-hidden border-2 border-stroke dark:border-stroke-dark shadow-md mr-4 flex-shrink-0">
               <img
                 src={restaurant.logo}
                 alt={`${restaurant.name} logo`}
@@ -66,7 +69,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
             </div>
             
             {/* Restaurant Info - Right Side */}
-            <div className="flex-1 p-4 flex flex-col justify-center">
+            <div className="flex-1">
               {/* Restaurant Name */}
               <h1 className="text-lg font-bold text-text-high dark:text-text-high-dark mb-1">
                 {restaurant.name}
@@ -78,7 +81,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
               </p>
               
               {/* Status Indicator */}
-              <div className="mb-3">
+              <div className="mb-2">
                 {getStatusDisplay()}
               </div>
               

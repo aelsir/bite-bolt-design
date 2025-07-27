@@ -3,14 +3,20 @@ import { FulfillmentType, MenuItem } from './types';
 import { restaurant, categories, menuItems } from './data/mockData';
 import { RestaurantHome } from './screens/RestaurantHome';
 import { CategoryItems } from './screens/CategoryItems';
+import { ProfileScreen } from './screens/ProfileScreen';
+import { SocialScreen } from './screens/SocialScreen';
+import { OffersScreen } from './screens/OffersScreen';
 import { ItemDetailModal } from './components/Menu/ItemDetailModal';
 import { CartBar } from './components/Cart/CartBar';
+import { BottomNavBar } from './components/Layout/BottomNavBar';
 import { useCart } from './hooks/useCart';
 
-type Screen = 'home' | 'category';
+type MainScreen = 'home' | 'category';
+type TabType = 'home' | 'profile' | 'social' | 'offers';
 
 function App() {
-  const [currentScreen, setCurrentScreen] = useState<Screen>('home');
+  const [currentScreen, setCurrentScreen] = useState<MainScreen>('home');
+  const [activeTab, setActiveTab] = useState<TabType>('home');
   const [fulfillmentType, setFulfillmentType] = useState<FulfillmentType>('delivery');
   const [selectedCategory, setSelectedCategory] = useState<string>('pizzas');
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -40,32 +46,61 @@ function App() {
     console.log('Cart clicked:', cart);
   };
 
+  // Handle tab change
+  const handleTabChange = (tab: TabType) => {
+    setActiveTab(tab);
+    if (tab === 'home') {
+      setCurrentScreen('home');
+    }
+  };
+
+  // Render the active tab content
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <>
+            {currentScreen === 'home' && (
+              <RestaurantHome
+                restaurant={restaurant}
+                categories={categories}
+                fulfillmentType={fulfillmentType}
+                onFulfillmentChange={setFulfillmentType}
+                onCategorySelect={handleCategorySelect}
+              />
+            )}
+
+            {currentScreen === 'category' && (
+              <CategoryItems
+                categories={categories}
+                menuItems={menuItems}
+                selectedCategory={selectedCategory}
+                onCategoryChange={setSelectedCategory}
+                onItemSelect={handleItemSelect}
+                onBack={() => setCurrentScreen('home')}
+                restaurantName={restaurant.name}
+              />
+            )}
+          </>
+        );
+      case 'profile':
+        return <ProfileScreen />;
+      case 'social':
+        return <SocialScreen />;
+      case 'offers':
+        return <OffersScreen />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className={isDarkMode ? 'dark' : ''}>
-      <div className="min-h-screen bg-surface dark:bg-surface-dark">
-        {currentScreen === 'home' && (
-          <RestaurantHome
-            restaurant={restaurant}
-            categories={categories}
-            fulfillmentType={fulfillmentType}
-            onFulfillmentChange={setFulfillmentType}
-            onCategorySelect={handleCategorySelect}
-          />
-        )}
+      <div className="min-h-screen bg-surface dark:bg-surface-dark pb-16">
+        {renderTabContent()}
 
-        {currentScreen === 'category' && (
-          <CategoryItems
-            categories={categories}
-            menuItems={menuItems}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            onItemSelect={handleItemSelect}
-            onBack={() => setCurrentScreen('home')}
-            restaurantName={restaurant.name}
-          />
-        )}
-
-        <CartBar cart={cart} onClick={handleCartClick} />
+        {/* Only show CartBar on home tab */}
+        {activeTab === 'home' && <CartBar cart={cart} onClick={handleCartClick} />}
 
         <ItemDetailModal
           item={selectedItem!}
@@ -73,6 +108,8 @@ function App() {
           onClose={() => setSelectedItem(null)}
           onAddToCart={handleAddToCart}
         />
+
+        <BottomNavBar activeTab={activeTab} onTabChange={handleTabChange} />
       </div>
     </div>
   );

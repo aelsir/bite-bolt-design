@@ -16,7 +16,7 @@ export const CartBar: React.FC<CartBarProps> = ({ cart, onClick }) => {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-accent text-white p-4 transition-all duration-slide ease-out">
+    <div className="fixed bottom-16 left-0 right-0 bg-accent text-white p-4 transition-all duration-slide ease-out z-40">
       <button 
         className="w-full flex items-center justify-between"
         onClick={onClick}
