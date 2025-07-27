@@ -51,8 +51,8 @@ export const BasketScreen: React.FC<BasketScreenProps> = ({ cart, onBack }) => {
         showRightAction={true}
         RightActionIcon={Trash}
         onRightActionClick={handleClearBasket}
-        rightActionColorClass="text-error"
-        rightActionBgClass="bg-error hover:bg-red-600"
+        rightActionColorClass="text-red-500"
+        rightActionBgClass="hover:bg-red-50"
       />
       <div className="p-4">
         <div className="mb-6 space-y-4">
@@ -60,29 +60,17 @@ export const BasketScreen: React.FC<BasketScreenProps> = ({ cart, onBack }) => {
             <div className="text-center text-gray-500">Your basket is empty.</div>
           ) : (
             items.map(item => (
-              <div key={item.id} className="flex items-center p-3 bg-white dark:bg-subsurface-dark rounded-lg shadow-sm border border-stroke dark:border-stroke-dark">
-                {/* Left side: Item name, options, price */}
-                <div className="flex-1 flex flex-col">
+              <div key={item.id} className="flex justify-between items-stretch p-3 bg-white dark:bg-subsurface-dark rounded-lg shadow-sm border border-stroke dark:border-stroke-dark">
+                {/* Left side: Item name, options, quantity controls */}
+                <div className="flex flex-col flex-1">
                   <div className="font-semibold text-text-high dark:text-text-high-dark text-base">{item.menuItem.name}</div>
                   {Object.keys(item.selectedOptions).length > 0 && (
                     <div className="text-sm text-text-body dark:text-text-body-dark mt-1">
                       Options: {Object.entries(item.selectedOptions).map(([k, v]) => `${k}: ${v.join(', ')}`).join('; ')}
                     </div>
                   )}
-                  <div className="font-bold text-accent text-lg mt-2">£{item.totalPrice.toFixed(2)}</div>
-                </div>
-
-                {/* Right side: Delete button & Quantity controls */}
-                <div className="flex flex-col items-end justify-between h-full ml-4">
-                  {/* Delete button aligned with title */}
-                  <button 
-                    onClick={() => handleRemoveItem(item.id)} 
-                    className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-50 transition"
-                  >
-                    <Trash size={18} className="text-error" />
-                  </button>
-                  {/* Quantity Control aligned with price */}
-                  <div className="flex items-center gap-1 ml-4">
+                  {/* Quantity Control */}
+                  <div className="flex items-center gap-1 mt-2">
                     <button 
                       onClick={() => handleQuantityChange(item.id, -1)} 
                       className="w-8 h-8 flex items-center justify-center rounded-md bg-gray-200 text-text-high dark:bg-gray-700 dark:text-text-high-dark hover:bg-gray-300 dark:hover:bg-gray-600 transition"
@@ -100,28 +88,43 @@ export const BasketScreen: React.FC<BasketScreenProps> = ({ cart, onBack }) => {
                     </button>
                   </div>
                 </div>
+
+                {/* Right side: Delete button & Price */}
+                <div className="flex flex-col items-end justify-between h-full ml-4 self-stretch">
+                  {/* Delete button aligned with title */}
+                  <button 
+                    onClick={() => handleRemoveItem(item.id)} 
+                    className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-md hover:bg-red-50 transition"
+                  >
+                    <Trash size={18} className="text-red-500" />
+                  </button>
+                  {/* Price */}
+                  <div className="font-bold text-accent text-lg">£{item.totalPrice.toFixed(2)}</div>
+                </div>
               </div>
             ))
           )}
         </div>
-        <div className="bg-gray-100 rounded-lg p-4 mb-4">
-          <div className="flex justify-between mb-2">
+        <div className="bg-gray-100 rounded-lg p-4 mb-4 space-y-2">
+          <div className="flex justify-between">
             <span>Subtotal</span>
             <span>£{subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-2">
-            <span>Promotion</span>
-            <span className="bg-green-500 text-white px-2 py-1 rounded">-£{promotion.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between mb-2">
+          {promotion > 0 && (
+            <div className="flex justify-between">
+              <span>Promotion</span>
+              <span className="bg-green-500 text-white px-2 py-1 rounded">-£{promotion.toFixed(2)}</span>
+            </div>
+          )}
+          <div className="flex justify-between">
             <span>Delivery Fees</span>
             <span>£{deliveryFees.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-2">
+          <div className="flex justify-between">
             <span>Fees</span>
             <span>£{fees.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mt-4 text-lg font-bold">
+          <div className="flex justify-between pt-2 border-t border-gray-300 text-lg font-bold">
             <span>Total</span>
             <span>£{total.toFixed(2)}</span>
           </div>
@@ -155,4 +158,4 @@ export const BasketScreen: React.FC<BasketScreenProps> = ({ cart, onBack }) => {
       </div>
     </div>
   );
-}; 
+};

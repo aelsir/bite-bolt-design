@@ -25,7 +25,7 @@ export const CartBar: React.FC<CartBarProps> = ({ cart, onClick, isBottomNavVisi
       >
         {/* Item count on the left */}
         <div className="relative flex items-center">
-          <span className="w-8 h-8 flex items-center justify-center rounded-full bg-white text-accent font-bold text-lg">
+          <span className="w-8 h-8 flex items-center justify-center rounded-md bg-white text-accent font-bold text-lg">
             {itemCount}
           </span>
         </div>

@@ -100,17 +100,25 @@ function App() {
     <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-surface dark:bg-surface-dark pb-16">
         {currentScreen === 'basket' ? (
-          <>
-            <BasketScreen cart={cart} onBack={() => setCurrentScreen('home')} />
-            <CartBar cart={cart} onClick={() => {}} isBottomNavVisible={false} isBasketScreen={true} />
-          </>
+          <BasketScreen cart={cart} onBack={() => setCurrentScreen('home')} />
         ) : (
           renderTabContent()
         )}
 
-        {/* Only show CartBar on home tab and not in basket */}
+        {/* Render CartBar or Go to Checkout button based on screen and tab */}
         {activeTab === 'home' && currentScreen !== 'basket' && (
           <CartBar cart={cart} onClick={handleCartClick} isBottomNavVisible={isBottomNavVisible} isBasketScreen={false} />
+        )}
+
+        {currentScreen === 'basket' && (
+          <div className="fixed bottom-0 left-0 right-0 flex justify-center z-40">
+            <button
+              className="w-full flex items-center justify-center bg-accent py-4 px-6 rounded-none text-white text-xl font-bold"
+              onClick={() => { /* Handle checkout logic here */ }}
+            >
+              Go to checkout
+            </button>
+          </div>
         )}
 
         <ItemDetailModal

@@ -14,7 +14,7 @@ export const CategoryRail: React.FC<CategoryRailProps> = ({
   onSelect
 }) => {
   return (
-    <div className="flex gap-3 overflow-x-auto pb-2">
+    <div className="flex gap-3 overflow-x-hidden pb-2">
       {categories.map((category) => (
         <Pill
           key={category.id}

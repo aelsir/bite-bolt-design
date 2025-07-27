@@ -55,7 +55,7 @@ export const CategoryItems: React.FC<CategoryItemsProps> = ({
       />
 
       {/* Horizontal Category Menu */}
-      <div className="flex items-center gap-2 px-4 py-0">
+      <div className="flex items-center gap-2 px-4 py-0 mt-4">
         <button
           className="p-2 hover:bg-subsurface dark:hover:bg-subsurface-dark rounded-card transition-colors duration-button flex-shrink-0"
           aria-label="Open menu"
