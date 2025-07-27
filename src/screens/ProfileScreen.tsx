@@ -42,7 +42,7 @@ export const ProfileScreen: React.FC = () => {
         <p className="text-text-body dark:text-text-body-dark text-center mb-8">
           Sign in to view your orders, save your favorite restaurants, and more.
         </p>
-        <div className="w-full max-w-xs bg-white dark:bg-surface-dark rounded-lg border border-stroke dark:border-stroke-dark shadow p-6 mb-4">
+        <div className="w-full max-w-xs mb-4">
           <div className="mb-4">
             <label className="block text-sm font-medium mb-1">Email</label>
             <input
@@ -99,7 +99,7 @@ export const ProfileScreen: React.FC = () => {
         <img src={user.photo} alt={user.name} className="w-24 h-24 rounded-full object-cover mb-3 border-4 border-accent" />
         <h2 className="text-2xl font-bold text-text-high dark:text-text-high-dark mb-1">{user.name}</h2>
         <button
-          className="mt-2 text-accent dark:text-accent-dark text-sm font-medium underline"
+          className="mt-2 bg-red-500 text-white py-2 px-4 rounded-lg font-medium"
           onClick={() => setSignedIn(false)}
         >
           Log Out
@@ -110,7 +110,7 @@ export const ProfileScreen: React.FC = () => {
         {TABS.map(t => (
           <button
             key={t}
-            className={`px-4 py-2 rounded-full font-medium transition-colors ${tab === t ? 'bg-accent text-white' : 'bg-gray-100 text-gray-800'}`}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${tab === t ? 'bg-accent text-white' : 'bg-gray-100 text-gray-800'}`}
             onClick={() => setTab(t)}
           >
             {t}
@@ -166,10 +166,10 @@ export const ProfileScreen: React.FC = () => {
                 <span className="font-medium">{user.phone}</span>
               </div>
               <button
-                className="mt-2 text-accent dark:text-accent-dark text-sm font-medium flex items-center gap-1"
+                className="mt-4 w-full bg-accent dark:bg-accent-dark text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2"
                 onClick={() => setEditInfo(true)}
               >
-                <Edit2 size={16} /> Edit
+                <Edit2 size={18} /> Edit
               </button>
             </>
           )}
@@ -177,7 +177,7 @@ export const ProfileScreen: React.FC = () => {
       )}
       {tab === 'Addresses' && (
         <div className="max-w-md mx-auto bg-white dark:bg-surface-dark rounded-lg shadow p-6 flex flex-col gap-4">
-          {user.addresses.map(addr => (
+            {user.addresses.map(addr => (
             <div key={addr.id} className={`flex items-center gap-3 p-3 rounded-lg ${addr.isDefault ? 'bg-accent/10 border border-accent' : 'bg-gray-100'}`}>
               <Home size={20} className="text-accent" />
               <div className="flex-1">
@@ -186,7 +186,12 @@ export const ProfileScreen: React.FC = () => {
               </div>
               {addr.isDefault && <CheckCircle size={20} className="text-accent" />}
             </div>
-          ))}
+            ))}
+            <button
+              className="mt-4 w-full bg-accent dark:bg-accent-dark text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2"
+            >
+              <Map size={18} /> Add Address
+            </button>
         </div>
       )}
       {tab === 'Orders' && (
