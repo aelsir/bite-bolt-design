@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { ThemeContext } from '../contexts/ThemeContext';
 import { User, LogIn, MapPin, Mail, Phone, Home, CheckCircle, Package, Apple, ArrowRight, Map, Edit2, Save, X as CloseIcon } from 'lucide-react';
 
 const fakeUser = {
@@ -29,10 +30,11 @@ export const ProfileScreen: React.FC = () => {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const user = { ...fakeUser, email, phone };
+  const { theme, setTheme } = useContext(ThemeContext);
 
   if (!signedIn) {
     return (
-      <div className="min-h-screen bg-surface dark:bg-surface-dark p-4 flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-surface p-4 flex flex-col items-center justify-center">
         <div className="w-24 h-24 bg-accent dark:bg-accent-dark rounded-full flex items-center justify-center mb-4">
           <User size={48} className="text-white" />
         </div>
@@ -94,7 +96,7 @@ export const ProfileScreen: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-surface dark:bg-surface-dark p-4">
+    <div className="min-h-screen bg-surface p-4">
       <div className="flex flex-col items-center justify-center pt-8 pb-6">
         <img src={user.photo} alt={user.name} className="w-24 h-24 rounded-full object-cover mb-3 border-4 border-accent" />
         <h2 className="text-2xl font-bold text-text-high dark:text-text-high-dark mb-1">{user.name}</h2>
@@ -118,8 +120,17 @@ export const ProfileScreen: React.FC = () => {
         ))}
       </div>
       {/* Tab Content */}
-      {tab === 'Personal Info' && (
-        <div className="max-w-md mx-auto bg-white dark:bg-surface-dark rounded-lg shadow p-6 flex flex-col gap-4">
+      <div className="max-w-md mx-auto">
+        {renderTabContent()}
+      </div>
+    </div>
+  );
+
+  function renderTabContent() {
+    switch (tab) {
+    case 'Personal Info':
+      return (
+        <div className="max-w-md mx-auto bg-surface rounded-lg shadow p-6 flex flex-col gap-4">
           {editInfo ? (
             <>
               <div className="flex items-center gap-3">
@@ -173,10 +184,32 @@ export const ProfileScreen: React.FC = () => {
               </button>
             </>
           )}
+          <div className="mt-6 pt-6 border-t border-stroke dark:border-stroke-dark">
+            <h3 className="text-lg font-semibold mb-4 text-text-high dark:text-text-high-dark">Theme Settings</h3>
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <label className="text-text-body dark:text-text-body-dark">Primary Color</label>
+                <input type="color" value={theme.primaryColor} onChange={e => setTheme({ ...theme, primaryColor: e.target.value })} />
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-text-body dark:text-text-body-dark">Background Color</label>
+                <input type="color" value={theme.backgroundColor} onChange={e => setTheme({ ...theme, backgroundColor: e.target.value })} />
+              </div>
+              <div className="flex items-center justify-between">
+                <label className="text-text-body dark:text-text-body-dark">Font</label>
+                <select value={theme.font} onChange={e => setTheme({ ...theme, font: e.target.value })} className="border rounded px-2 py-1">
+                  <option value="Inter">Inter</option>
+                  <option value="Roboto">Roboto</option>
+                  <option value="Lato">Lato</option>
+                </select>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
-      {tab === 'Addresses' && (
-        <div className="max-w-md mx-auto bg-white dark:bg-surface-dark rounded-lg shadow p-6 flex flex-col gap-4">
+      );
+    case 'Addresses':
+      return (
+        <div className="max-w-md mx-auto bg-surface rounded-lg shadow p-6 flex flex-col gap-4">
             {user.addresses.map(addr => (
             <div key={addr.id} className={`flex items-center gap-3 p-3 rounded-lg ${addr.isDefault ? 'bg-accent/10 border border-accent' : 'bg-gray-100'}`}>
               <Home size={20} className="text-accent" />
@@ -193,9 +226,10 @@ export const ProfileScreen: React.FC = () => {
               <Map size={18} /> Add Address
             </button>
         </div>
-      )}
-      {tab === 'Orders' && (
-        <div className="max-w-md mx-auto bg-white dark:bg-surface-dark rounded-lg shadow p-6 flex flex-col gap-4">
+      );
+    case 'Orders':
+      return (
+        <div className="max-w-md mx-auto bg-surface rounded-lg shadow p-6 flex flex-col gap-4">
           {user.orders.map(order => (
             <div key={order.id} className="flex items-center gap-3 p-3 rounded-lg bg-gray-100">
               <Package size={20} className="text-accent" />
@@ -209,7 +243,10 @@ export const ProfileScreen: React.FC = () => {
             </div>
           ))}
         </div>
-      )}
-    </div>
-  );
+      );
+    default:
+      return null;
+    }
+  }
+
 };

@@ -5,13 +5,13 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        'sans': ['IBM Plex Sans Arabic', 'system-ui', 'sans-serif'],
+        'sans': ['var(--font-family)', 'IBM Plex Sans Arabic', 'system-ui', 'sans-serif'],
       },
       colors: {
         // Primary accent - used for active, focus, CTA, selection states
         accent: {
-          DEFAULT: '#5A23B1',
-          dark: '#7C3AED', // For dark mode
+          DEFAULT: 'var(--primary-color)',
+          dark: 'var(--primary-color)', // For dark mode
         },
         // Grayscale system
         text: {
@@ -28,8 +28,8 @@ export default {
           dark: '#334155',
         },
         surface: {
-          DEFAULT: '#FFFFFF',
-          dark: '#09090B',
+          DEFAULT: 'var(--background-color)',
+          dark: 'var(--background-color)',
         },
         subsurface: {
           DEFAULT: '#F8FAFC',
