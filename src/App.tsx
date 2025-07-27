@@ -10,8 +10,9 @@ import { ItemDetailModal } from './components/Menu/ItemDetailModal';
 import { CartBar } from './components/Cart/CartBar';
 import { BottomNavBar } from './components/Layout/BottomNavBar';
 import { useCart } from './hooks/useCart';
+import { BasketScreen } from './screens/BasketScreen';
 
-type MainScreen = 'home' | 'category';
+type MainScreen = 'home' | 'category' | 'basket';
 type TabType = 'home' | 'profile' | 'social' | 'offers';
 
 function App() {
@@ -42,8 +43,7 @@ function App() {
   };
 
   const handleCartClick = () => {
-    // In a real app, this would navigate to cart screen
-    console.log('Cart clicked:', cart);
+    setCurrentScreen('basket');
   };
 
   // Handle tab change
@@ -94,13 +94,24 @@ function App() {
     }
   };
 
+  const isBottomNavVisible = !(currentScreen === 'category' || selectedItem || currentScreen === 'basket');
+
   return (
     <div className={isDarkMode ? 'dark' : ''}>
       <div className="min-h-screen bg-surface dark:bg-surface-dark pb-16">
-        {renderTabContent()}
+        {currentScreen === 'basket' ? (
+          <>
+            <BasketScreen cart={cart} onBack={() => setCurrentScreen('home')} />
+            <CartBar cart={cart} onClick={() => {}} isBottomNavVisible={false} isBasketScreen={true} />
+          </>
+        ) : (
+          renderTabContent()
+        )}
 
-        {/* Only show CartBar on home tab */}
-        {activeTab === 'home' && <CartBar cart={cart} onClick={handleCartClick} />}
+        {/* Only show CartBar on home tab and not in basket */}
+        {activeTab === 'home' && currentScreen !== 'basket' && (
+          <CartBar cart={cart} onClick={handleCartClick} isBottomNavVisible={isBottomNavVisible} isBasketScreen={false} />
+        )}
 
         <ItemDetailModal
           item={selectedItem!}
@@ -109,7 +120,10 @@ function App() {
           onAddToCart={handleAddToCart}
         />
 
-        <BottomNavBar activeTab={activeTab} onTabChange={handleTabChange} />
+        {/* Hide BottomNavBar when browsing a category or viewing an item */}
+        {isBottomNavVisible && (
+          <BottomNavBar activeTab={activeTab} onTabChange={handleTabChange} />
+        )}
       </div>
     </div>
   );

@@ -101,7 +101,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
           </div>
           
           {/* Spacing between content and divider */}
-          <div className="h-4"></div>
+          <div className="h-2"></div>
           
           {/* Horizontal Divider */}
           <div className="border-t border-stroke dark:border-stroke-dark"></div>

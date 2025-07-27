@@ -20,7 +20,7 @@ export const RestaurantHome: React.FC<RestaurantHomeProps> = ({
 }) => {
   return (
     <div className="min-h-screen bg-surface dark:bg-surface-dark">
-      <div className="p-4 mb-6">
+      <div className="p-4 mb-4">
         <RestaurantCard
           restaurant={restaurant}
           fulfillmentType={fulfillmentType}

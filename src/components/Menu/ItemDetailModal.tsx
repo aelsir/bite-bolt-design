@@ -186,8 +186,8 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
           ))}
         </div>
         
-        {/* Sticky Bottom Bar */}
-        <div className="sticky bottom-0 bg-surface dark:bg-surface-dark border-t border-stroke dark:border-stroke-dark p-4">
+        {/* Fixed Bottom Bar */}
+        <div className="fixed left-0 right-0 bottom-0 bg-surface dark:bg-surface-dark border-t border-stroke dark:border-stroke-dark p-4 z-50">
           {/* Quantity Controls */}
           <div className="flex items-center justify-center gap-4 mb-4">
             <button
@@ -209,12 +209,11 @@ export const ItemDetailModal: React.FC<ItemDetailModalProps> = ({
               <Plus size={16} />
             </button>
           </div>
-          
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
             disabled={isRequiredOptionMissing()}
-            className="w-full bg-accent dark:bg-accent-dark text-white font-medium py-4 px-6 rounded-card transition-all duration-button ease-out hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="w-full bg-accent dark:bg-accent-dark text-white font-medium py-4 px-6 rounded-none transition-all duration-button ease-out hover:shadow-hover disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <ShoppingCart size={20} />
             Add • £{totalPrice.toFixed(2)}

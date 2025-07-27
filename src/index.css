@@ -27,7 +27,7 @@
 @layer components {
   /* Outlined Pill Component */
   .pill {
-    @apply inline-flex items-center justify-center px-6 py-3 rounded-pill border transition-all duration-button ease-out min-h-tap-target;
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md border transition-all duration-button ease-out min-h-tap-target;
   }
   
   .pill-inactive {
