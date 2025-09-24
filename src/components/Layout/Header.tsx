@@ -69,7 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
               value={searchValue}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder={searchPlaceholder}
-              className="w-full pl-12 pr-4 py-2 rounded-pill border border-stroke dark:border-stroke-dark bg-surface dark:bg-surface-dark text-text-high dark:text-text-high-dark placeholder-text-subtle dark:placeholder-text-subtle-dark focus:outline-none focus:border-accent dark:focus:border-accent-dark transition-colors duration-button min-h-tap-target"
+              className="w-full pl-12 pr-4 py-2 rounded-card border border-stroke dark:border-stroke-dark bg-surface dark:bg-surface-dark text-text-high dark:text-text-high-dark placeholder-text-subtle dark:placeholder-text-subtle-dark focus:outline-none focus:border-accent dark:focus:border-accent-dark transition-colors duration-button min-h-tap-target"
             />
           </div>
         ) : title ? (
