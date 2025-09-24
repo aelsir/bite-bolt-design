@@ -1,5 +1,4 @@
 import React from 'react';
-import { Plus } from 'lucide-react';
 import { MenuItem } from '../../types';
 import { Card } from '../ui/Card';
 
@@ -25,16 +24,6 @@ export const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onClick }) => 
             <span className="text-15 font-semibold text-accent dark:text-accent-dark">
               £{item.price.toFixed(2)}
             </span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onClick(item);
-              }}
-              className="flex items-center justify-center w-8 h-8 bg-accent dark:bg-accent-dark text-white rounded-card transition-all duration-button ease-out hover:shadow-hover"
-              aria-label="Add to cart"
-            >
-              <Plus size={16} />
-            </button>
           </div>
         </div>
         
