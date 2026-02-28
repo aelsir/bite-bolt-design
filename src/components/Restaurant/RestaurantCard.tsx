@@ -14,7 +14,7 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
   fulfillmentType,
   onFulfillmentChange
 }) => {
-  const { isMuted, isLoaded, toggleMute } = useBackgroundMusic();
+  const { isMuted, isLoaded, hasUserInteracted, toggleMute } = useBackgroundMusic();
 
   // Extract postcode from address
   const addressParts = restaurant.location.split(', ');
@@ -55,10 +55,10 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
         >
           <div className="w-full h-full bg-black/30 relative">
             {/* Sound Control Button */}
-            {isLoaded && (
+            {isLoaded && hasUserInteracted && (
               <button
                 onClick={toggleMute}
-                className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm"
+                className="absolute top-4 right-4 w-10 h-10 bg-black/60 hover:bg-black/80 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm border border-white/20"
                 aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
               >
                 {isMuted ? (
@@ -67,6 +67,16 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
                   <Volume2 size={20} className="text-white" />
                 )}
               </button>
+            )}
+            
+            {/* Initial prompt for audio (shows before first interaction) */}
+            {isLoaded && !hasUserInteracted && (
+              <div className="absolute top-4 right-4 bg-black/60 text-white px-3 py-2 rounded-full text-xs backdrop-blur-sm border border-white/20 animate-pulse">
+                <div className="flex items-center gap-2">
+                  <Volume2 size={14} />
+                  <span>Click anywhere for ambient sound</span>
+                </div>
+              </div>
             )}
           </div>
         </div>

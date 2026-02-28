@@ -3,21 +3,22 @@ import { useState, useEffect, useRef } from 'react';
 export const useBackgroundMusic = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hasUserInteracted, setHasUserInteracted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     // Create audio element
     const audio = new Audio();
     
-    // YouTube video ID: kqWmBC2jsN0
-    // Using a converted MP3 version (in a real app, you'd host this file)
-    // For demo purposes, using a similar ambient restaurant sound
-    audio.src = 'https://www.soundjay.com/misc/sounds/restaurant-ambience.mp3';
+    // Using a restaurant ambience audio file
+    // This is a direct MP3 link that should work
+    audio.src = 'https://www.zapsplat.com/wp-content/uploads/2015/sound-effects-one/zapsplat_ambiences_restaurant_busy_chatter_cutlery_movement_001_24004.mp3';
     
     // Set audio properties
     audio.loop = true;
-    audio.volume = 0.15; // Very low volume (15%)
+    audio.volume = 0.1; // Very low volume (10%)
     audio.preload = 'auto';
+    audio.crossOrigin = 'anonymous';
     
     // Handle audio events
     audio.addEventListener('canplaythrough', () => {
@@ -25,47 +26,65 @@ export const useBackgroundMusic = () => {
     });
 
     audio.addEventListener('error', () => {
-      console.log('Audio failed to load, using fallback');
-      // Fallback to a different ambient sound
-      audio.src = 'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT';
-      setIsLoaded(true);
+      console.log('Primary audio failed, trying fallback');
+      // Try a different source
+      audio.src = 'https://actions.google.com/sounds/v1/ambiences/restaurant_ambience.ogg';
+      audio.load();
     });
 
     audioRef.current = audio;
 
-    // Auto-play when loaded (browsers may block this)
-    const playAudio = async () => {
+    // Function to attempt playing audio
+    const attemptPlay = async () => {
+      if (!hasUserInteracted) return;
+      
       try {
         await audio.play();
+        setIsMuted(false);
       } catch (error) {
-        console.log('Autoplay blocked by browser');
+        console.log('Audio play failed:', error);
         setIsMuted(true);
       }
     };
 
-    if (audio.readyState >= 3) {
-      playAudio();
-    } else {
-      audio.addEventListener('canplaythrough', playAudio, { once: true });
+    // Listen for user interaction to enable audio
+    const handleUserInteraction = () => {
+      setHasUserInteracted(true);
+      if (isLoaded && !isMuted) {
+        attemptPlay();
+      }
+    };
+
+    // Add event listeners for user interaction
+    document.addEventListener('click', handleUserInteraction, { once: true });
+    document.addEventListener('touchstart', handleUserInteraction, { once: true });
+    document.addEventListener('keydown', handleUserInteraction, { once: true });
+
+    // Try to play when loaded and user has interacted
+    if (audio.readyState >= 3 && hasUserInteracted) {
+      attemptPlay();
     }
 
     return () => {
       audio.pause();
-      audio.removeEventListener('canplaythrough', () => {});
-      audio.removeEventListener('error', () => {});
+      document.removeEventListener('click', handleUserInteraction);
+      document.removeEventListener('touchstart', handleUserInteraction);
+      document.removeEventListener('keydown', handleUserInteraction);
     };
-  }, []);
+  }, [hasUserInteracted, isLoaded, isMuted]);
 
   const toggleMute = async () => {
     if (!audioRef.current || !isLoaded) return;
 
+    setHasUserInteracted(true);
+
     if (isMuted) {
       try {
         await audioRef.current.play();
-        audioRef.current.volume = 0.15;
+        audioRef.current.volume = 0.1;
         setIsMuted(false);
       } catch (error) {
-        console.log('Failed to play audio');
+        console.log('Failed to play audio:', error);
       }
     } else {
       audioRef.current.pause();
@@ -76,6 +95,7 @@ export const useBackgroundMusic = () => {
   return {
     isMuted,
     isLoaded,
+    hasUserInteracted,
     toggleMute
   };
 };
