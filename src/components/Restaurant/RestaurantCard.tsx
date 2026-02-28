@@ -1,6 +1,7 @@
 import React from 'react';
-import { MapPin, Truck, Home } from 'lucide-react';
+import { MapPin, Truck, Home, Volume2, VolumeX } from 'lucide-react';
 import { Restaurant, FulfillmentType } from '../../types';
+import { useBackgroundMusic } from '../../hooks/useBackgroundMusic';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
@@ -13,6 +14,8 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
   fulfillmentType,
   onFulfillmentChange
 }) => {
+  const { isMuted, isLoaded, toggleMute } = useBackgroundMusic();
+
   // Extract postcode from address
   const addressParts = restaurant.location.split(', ');
   const postcode = addressParts[addressParts.length - 1] || '';
@@ -50,7 +53,22 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({
           className="w-full h-full bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: `url(${restaurant.heroImage})` }}
         >
-          <div className="w-full h-full bg-black/30" />
+          <div className="w-full h-full bg-black/30 relative">
+            {/* Sound Control Button */}
+            {isLoaded && (
+              <button
+                onClick={toggleMute}
+                className="absolute top-4 right-4 w-10 h-10 bg-black/50 hover:bg-black/70 rounded-full flex items-center justify-center transition-all duration-200 backdrop-blur-sm"
+                aria-label={isMuted ? 'Unmute background music' : 'Mute background music'}
+              >
+                {isMuted ? (
+                  <VolumeX size={20} className="text-white" />
+                ) : (
+                  <Volume2 size={20} className="text-white" />
+                )}
+              </button>
+            )}
+          </div>
         </div>
       </div>
       
